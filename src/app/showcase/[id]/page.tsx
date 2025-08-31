@@ -189,12 +189,12 @@ export default function ShowcasePage({ params }: ShowcasePageProps) {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {showcaseData.repositories.map((repo, index) => (
+                         {showcaseData.repositories.map((repo) => (
               <motion.div
                 key={repo.id}
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
+                                 transition={{ duration: 0.5 }}
                 className="bg-white dark:bg-dark-secondary rounded-2xl p-6 shadow-lg border border-gray-200 dark:border-dark-accent hover:shadow-xl transition-all duration-300"
               >
                 <div className="flex items-start justify-between mb-4">
@@ -289,7 +289,7 @@ export default function ShowcasePage({ params }: ShowcasePageProps) {
            <div className="mt-4 p-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg">
              <h4 className="text-sm font-semibold text-blue-900 dark:text-blue-100 mb-2">✨ New Widget System</h4>
              <p className="text-sm text-blue-700 dark:text-blue-300">
-               This new widget system works on any website and doesn't require iframes. Just add the script and div to your HTML!
+                               This new widget system works on any website and doesn&apos;t require iframes. Just add the script and div to your HTML!
              </p>
            </div>
          </motion.div>

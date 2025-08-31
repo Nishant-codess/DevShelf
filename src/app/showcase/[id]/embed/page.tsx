@@ -129,12 +129,12 @@ export default function ShowcaseEmbedPage({ params }: ShowcaseEmbedPageProps) {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {showcaseData.repositories.map((repo, index) => (
+                         {showcaseData.repositories.map((repo) => (
               <motion.div
                 key={repo.id}
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
+                                 transition={{ duration: 0.5 }}
                 className="bg-white dark:bg-dark-secondary rounded-2xl p-6 shadow-lg border border-gray-200 dark:border-dark-accent hover:shadow-xl transition-all duration-300"
               >
                 <div className="flex items-start justify-between mb-4">
