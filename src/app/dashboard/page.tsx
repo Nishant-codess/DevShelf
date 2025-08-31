@@ -10,10 +10,7 @@ import {
   Star, 
   GitFork, 
   Calendar,
-  Search,
-  Filter,
-  Trophy,
-  Badge
+  Search
 } from 'lucide-react'
 import { sampleRepositories } from '@/data/sampleRepos'
 import { Repository, Badge as BadgeType, Trophy as TrophyType } from '@/types'

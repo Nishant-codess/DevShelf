@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useTheme } from '@/contexts/ThemeContext'
 import { Sun, Moon, Menu, X, Github, Sparkles } from 'lucide-react'
-import { cn } from '@/lib/utils'
+
 
 export default function Navbar() {
   const { theme, toggleTheme } = useTheme()

@@ -2,11 +2,11 @@
 
 import { use, useState } from 'react'
 import { motion } from 'framer-motion'
-import { ArrowLeft, Star, GitFork, Eye, Calendar, ExternalLink, Github, Trophy, Badge as BadgeIcon } from 'lucide-react'
+import { ArrowLeft, Star, Eye, Calendar, ExternalLink, Github, Badge as BadgeIcon } from 'lucide-react'
 import Link from 'next/link'
 import { sampleRepositories } from '@/data/sampleRepos'
-import { formatNumber, getTimeAgo } from '@/lib/utils'
-import { Badge, Trophy as TrophyType } from '@/types'
+
+import { Badge } from '@/types'
 
 interface ProjectDetailsPageProps {
   params: Promise<{
@@ -43,10 +43,7 @@ export default function ProjectDetailsPage({ params }: ProjectDetailsPageProps) 
     { id: '3', name: 'Active', description: 'Updated within last 30 days', icon: '⚡', color: 'green', criteria: { type: 'age', value: 30 } }
   ]
 
-  const projectTrophies: TrophyType[] = [
-    { id: '1', name: 'Code Master', description: 'Repository with 1000+ stars', icon: '👑', color: 'purple', rarity: 'epic', unlocked: project.stargazers_count >= 1000, unlockedAt: project.stargazers_count >= 1000 ? '2024-12-01' : undefined },
-    { id: '2', name: 'Community Builder', description: 'Repository with 100+ forks', icon: '🌟', color: 'blue', rarity: 'rare', unlocked: project.forks_count >= 100, unlockedAt: project.forks_count >= 100 ? '2024-11-15' : undefined }
-  ]
+
 
   const tabs = [
     { id: 'overview', name: 'Overview', icon: Github },

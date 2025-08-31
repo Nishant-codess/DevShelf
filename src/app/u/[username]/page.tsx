@@ -2,13 +2,13 @@
 
 import { use } from 'react'
 import { motion } from 'framer-motion'
-import { ArrowLeft, Share2, Github, ExternalLink, Star, GitFork, Eye, Calendar } from 'lucide-react'
+import { ArrowLeft, Share2 } from 'lucide-react'
 import Link from 'next/link'
 import ParticlesBackground from '@/components/ParticlesBackground'
 import ProjectCard from '@/components/ProjectCard'
 import AIChatbot from '@/components/AIChatbot'
 import { sampleRepositories } from '@/data/sampleRepos'
-import { formatNumber, getTimeAgo } from '@/lib/utils'
+
 
 interface UserShowcasePageProps {
   params: Promise<{
@@ -115,7 +115,7 @@ export default function UserShowcasePage({ params }: UserShowcasePageProps) {
                 Featured Projects
               </h2>
               <p className="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-                These are the projects I'm most proud of and want to highlight
+                These are the projects I&apos;m most proud of and want to highlight
               </p>
             </motion.div>
 
