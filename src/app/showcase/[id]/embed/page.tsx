@@ -24,18 +24,24 @@ export default function ShowcaseEmbedPage({ params }: ShowcaseEmbedPageProps) {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    try {
-      const data = sessionStorage.getItem('showcaseData')
-      const storedId = sessionStorage.getItem('showcaseId')
-      
-      if (data && storedId === id) {
-        setShowcaseData(JSON.parse(data))
+    const loadShowcaseData = async () => {
+      try {
+        const response = await fetch(`/api/showcase/${id}`)
+        
+        if (response.ok) {
+          const data = await response.json()
+          setShowcaseData(data)
+        } else {
+          console.error('Showcase not found')
+        }
+      } catch (error) {
+        console.error('Error loading showcase data:', error)
+      } finally {
+        setLoading(false)
       }
-    } catch (error) {
-      console.error('Error loading showcase data:', error)
-    } finally {
-      setLoading(false)
     }
+    
+    loadShowcaseData()
   }, [id])
 
   if (loading) {

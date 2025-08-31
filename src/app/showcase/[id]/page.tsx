@@ -27,25 +27,29 @@ export default function ShowcasePage({ params }: ShowcasePageProps) {
   const [copied, setCopied] = useState(false)
 
   useEffect(() => {
-    try {
-      const data = sessionStorage.getItem('showcaseData')
-      const storedId = sessionStorage.getItem('showcaseId')
-      
-      if (data && storedId === id) {
-        setShowcaseData(JSON.parse(data))
-      } else {
-        router.push('/dashboard')
+    const loadShowcaseData = async () => {
+      try {
+        const response = await fetch(`/api/showcase/${id}`)
+        
+        if (response.ok) {
+          const data = await response.json()
+          setShowcaseData(data)
+        } else {
+          console.error('Showcase not found')
+        }
+      } catch (error) {
+        console.error('Error loading showcase data:', error)
+      } finally {
+        setLoading(false)
       }
-    } catch (error) {
-      console.error('Error loading showcase data:', error)
-      router.push('/dashboard')
-    } finally {
-      setLoading(false)
     }
-  }, [id, router])
+    
+    loadShowcaseData()
+  }, [id])
 
   const handleCopyEmbedCode = () => {
-    const embedCode = `<iframe src="${window.location.origin}/showcase/${id}/embed" width="100%" height="600" frameborder="0" style="border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);"></iframe>`
+    const embedCode = `<script src="https://devshelf-nishant.vercel.app/widget.js"></script>
+<div class="devshelf-widget" data-showcase-id="${id}"></div>`
     navigator.clipboard.writeText(embedCode)
     setCopied(true)
     setTimeout(() => setCopied(false), 2000)
@@ -263,25 +267,32 @@ export default function ShowcasePage({ params }: ShowcasePageProps) {
           </div>
         </motion.div>
 
-        {/* Embed Instructions */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3 }}
-          className="bg-white dark:bg-dark-secondary rounded-2xl p-6 shadow-lg border border-gray-200 dark:border-dark-accent mt-8"
-        >
-          <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
-            Embed This Showcase
-          </h3>
-          <p className="text-gray-600 dark:text-gray-400 mb-4">
-            Copy the code below to embed this showcase on your website:
-          </p>
-          <div className="bg-gray-100 dark:bg-dark-accent p-4 rounded-lg">
-            <code className="text-sm text-gray-800 dark:text-gray-200">
-              {`<iframe src="${typeof window !== 'undefined' ? window.location.origin : ''}/showcase/${id}/embed" width="100%" height="600" frameborder="0" style="border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);"></iframe>`}
-            </code>
-          </div>
-        </motion.div>
+                 {/* Embed Instructions */}
+         <motion.div
+           initial={{ opacity: 0, y: 20 }}
+           animate={{ opacity: 1, y: 0 }}
+           transition={{ delay: 0.3 }}
+           className="bg-white dark:bg-dark-secondary rounded-2xl p-6 shadow-lg border border-gray-200 dark:border-dark-accent mt-8"
+         >
+           <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+             Embed This Showcase
+           </h3>
+           <p className="text-gray-600 dark:text-gray-400 mb-4">
+             Copy the code below to embed this showcase on your website:
+           </p>
+           <div className="bg-gray-100 dark:bg-dark-accent p-4 rounded-lg">
+             <code className="text-sm text-gray-800 dark:text-gray-200">
+               {`<script src="https://devshelf-nishant.vercel.app/widget.js"></script>
+<div class="devshelf-widget" data-showcase-id="${id}"></div>`}
+             </code>
+           </div>
+           <div className="mt-4 p-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg">
+             <h4 className="text-sm font-semibold text-blue-900 dark:text-blue-100 mb-2">✨ New Widget System</h4>
+             <p className="text-sm text-blue-700 dark:text-blue-300">
+               This new widget system works on any website and doesn't require iframes. Just add the script and div to your HTML!
+             </p>
+           </div>
+         </motion.div>
       </div>
     </div>
   )

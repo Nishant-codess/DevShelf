@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DevShelf Widget Demo</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #111827;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .demo-section {
+            margin: 40px 0;
+            padding: 20px;
+            border: 2px dashed #e5e7eb;
+            border-radius: 8px;
+            background: #f9fafb;
+        }
+        .demo-section h2 {
+            color: #374151;
+            margin-bottom: 15px;
+        }
+        .code-block {
+            background: #1f2937;
+            color: #f9fafb;
+            padding: 15px;
+            border-radius: 6px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            margin: 15px 0;
+            overflow-x: auto;
+        }
+        .widget-demo {
+            margin: 20px 0;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            border: 1px solid #e5e7eb;
+        }
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        .feature {
+            padding: 20px;
+            background: #f8fafc;
+            border-radius: 8px;
+            border-left: 4px solid #38BDF8;
+        }
+        .feature h3 {
+            color: #111827;
+            margin-bottom: 10px;
+        }
+        .feature p {
+            color: #6b7280;
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 DevShelf Widget Demo</h1>
+        
+        <p style="text-align: center; color: #6b7280; font-size: 18px; margin-bottom: 40px;">
+            Embed your GitHub project showcase on any website with just two lines of code!
+        </p>
+
+        <div class="features">
+            <div class="feature">
+                <h3>✨ Easy Integration</h3>
+                <p>Just add a script tag and a div element to embed your showcase anywhere.</p>
+            </div>
+            <div class="feature">
+                <h3>🎨 Beautiful Design</h3>
+                <p>Responsive, modern design that looks great on any website.</p>
+            </div>
+            <div class="feature">
+                <h3>🔗 Live Links</h3>
+                <p>Direct links to GitHub repositories and live demos.</p>
+            </div>
+            <div class="feature">
+                <h3>📱 Mobile Friendly</h3>
+                <p>Fully responsive design that works on all devices.</p>
+            </div>
+        </div>
+
+        <div class="demo-section">
+            <h2>📋 How to Use</h2>
+            <p>Add this code to your website:</p>
+            <div class="code-block">
+&lt;script src="https://devshelf-nishant.vercel.app/widget.js"&gt;&lt;/script&gt;
+&lt;div class="devshelf-widget" data-showcase-id="YOUR_SHOWCASE_ID"&gt;&lt;/div&gt;
+            </div>
+            <p><strong>Replace "YOUR_SHOWCASE_ID"</strong> with your actual showcase ID (e.g., "username-1234567890")</p>
+        </div>
+
+        <div class="demo-section">
+            <h2>🎯 Live Demo</h2>
+            <p>Below is a live example of the DevShelf widget:</p>
+            
+            <div class="widget-demo">
+                <!-- This is where the widget will be loaded -->
+                <div class="devshelf-widget" data-showcase-id="demo-1234567890"></div>
+            </div>
+            
+            <p style="text-align: center; color: #6b7280; font-size: 14px; margin-top: 20px;">
+                Note: This demo shows a placeholder. Create your own showcase to see your projects!
+            </p>
+        </div>
+
+        <div class="demo-section">
+            <h2>🔧 Customization</h2>
+            <p>The widget automatically adapts to your website's styling and is fully responsive. You can also customize the appearance by adding CSS:</p>
+            <div class="code-block">
+/* Customize widget appearance */
+.devshelf-widget-container {
+    max-width: 800px; /* Adjust width */
+    margin: 0 auto; /* Center the widget */
+}
+
+.devshelf-showcase {
+    border-radius: 16px; /* Rounder corners */
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15); /* Custom shadow */
+}
+            </div>
+        </div>
+
+        <div class="demo-section">
+            <h2>📈 Benefits</h2>
+            <ul style="color: #374151; line-height: 1.6;">
+                <li><strong>Professional Portfolio:</strong> Showcase your best projects on your personal website</li>
+                <li><strong>Easy Updates:</strong> Update your showcase once, it updates everywhere</li>
+                <li><strong>No Maintenance:</strong> No need to manually update project cards</li>
+                <li><strong>Real-time Data:</strong> Always shows the latest GitHub stats</li>
+                <li><strong>Cross-platform:</strong> Works on any website, blog, or portfolio</li>
+            </ul>
+        </div>
+
+        <div style="text-align: center; margin-top: 40px; padding: 20px; background: #f8fafc; border-radius: 8px;">
+            <h3 style="color: #111827; margin-bottom: 10px;">Ready to create your showcase?</h3>
+            <p style="color: #6b7280; margin-bottom: 20px;">Visit DevShelf to create your own embeddable project showcase!</p>
+            <a href="https://devshelf-nishant.vercel.app" target="_blank" rel="noopener noreferrer" style="
+                background: linear-gradient(135deg, #38BDF8 0%, #8B5CF6 100%);
+                color: white;
+                padding: 12px 24px;
+                border-radius: 8px;
+                text-decoration: none;
+                font-weight: 600;
+                display: inline-block;
+                transition: transform 0.2s ease;
+            " onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='none'">
+                🚀 Create Your Showcase
+            </a>
+        </div>
+    </div>
+
+    <!-- DevShelf Widget Script -->
+    <script src="https://devshelf-nishant.vercel.app/widget.js"></script>
+</body>
+</html>

@@ -145,7 +145,7 @@ export default function DashboardPage() {
     setSelectedRepos(newSelected)
   }
 
-  const handleCreateShowcase = () => {
+  const handleCreateShowcase = async () => {
     if (selectedRepos.size === 0 || !user) return
     
     const selectedReposList = repos.filter(repo => selectedRepos.has(repo.id))
@@ -158,16 +158,26 @@ export default function DashboardPage() {
     // Generate unique showcase ID using GitHub username
     const showcaseId = `${user.login}-${Date.now()}`
     
-    // Store showcase data in sessionStorage with unique ID
     try {
-      sessionStorage.setItem('showcaseData', JSON.stringify(showcaseData))
-      sessionStorage.setItem('showcaseId', showcaseId)
+      // Store showcase data in API
+      const response = await fetch(`/api/showcase/${showcaseId}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(showcaseData),
+      })
+      
+      if (!response.ok) {
+        throw new Error('Failed to store showcase data')
+      }
+      
+      // Navigate to showcase page with unique ID
+      router.push(`/showcase/${showcaseId}`)
     } catch (error) {
-      console.error('Error storing showcase data:', error)
+      console.error('Error creating showcase:', error)
+      alert('Failed to create showcase. Please try again.')
     }
-    
-    // Navigate to showcase page with unique ID
-    router.push(`/showcase/${showcaseId}`)
   }
 
   if (loading) {
