@@ -1,15 +1,65 @@
 'use client'
 
+import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { ArrowRight, Github, Star, GitFork, Eye } from 'lucide-react'
+import { ArrowRight, Github, Star, GitFork, Eye, LogOut } from 'lucide-react'
 import ParticlesBackground from '@/components/ParticlesBackground'
 import ProjectCard from '@/components/ProjectCard'
 import AIChatbot from '@/components/AIChatbot'
+import DemoModal from '@/components/DemoModal'
+import { initiateGitHubLogin, isAuthenticated, removeAccessToken, getAccessToken, getAuthenticatedUser } from '@/lib/github-auth'
+import { GitHubUser } from '@/lib/github-auth'
 
 import { sampleRepositories } from '@/data/sampleRepos'
 
 export default function HomePage() {
   const featuredRepos = sampleRepositories.filter(repo => repo.featured)
+  const [isDemoModalOpen, setIsDemoModalOpen] = useState(false)
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const [user, setUser] = useState<GitHubUser | null>(null)
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    const checkAuthStatus = async () => {
+      const authenticated = isAuthenticated()
+      setIsLoggedIn(authenticated)
+      
+      if (authenticated) {
+        try {
+          const accessToken = getAccessToken()
+          if (accessToken) {
+            const userData = await getAuthenticatedUser(accessToken)
+            setUser(userData)
+          }
+        } catch (error) {
+          console.error('Error fetching user data:', error)
+          // If there's an error, remove the invalid token
+          removeAccessToken()
+          setIsLoggedIn(false)
+        }
+      }
+      
+      setLoading(false)
+    }
+
+    checkAuthStatus()
+  }, [])
+
+  const handleLogin = () => {
+    initiateGitHubLogin()
+  }
+
+  const handleLogout = () => {
+    removeAccessToken()
+    // Clear user repositories from sessionStorage
+    try {
+      sessionStorage.removeItem('userRepositories')
+    } catch (error) {
+      console.error('Error clearing user repositories:', error)
+    }
+    setIsLoggedIn(false)
+    setUser(null)
+  }
 
   return (
     <div className="relative min-h-screen">
@@ -45,23 +95,69 @@ export default function HomePage() {
             transition={{ duration: 0.8, delay: 0.2 }}
             className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12"
           >
-            <motion.button
-              whileHover={{ scale: 1.05, y: -2 }}
-              whileTap={{ scale: 0.95 }}
-              className="px-8 py-4 bg-gradient-to-r from-neon-blue to-neon-purple text-white rounded-xl font-semibold text-lg shadow-lg hover:shadow-xl transition-all duration-300 flex items-center space-x-2"
-            >
-              <Github className="w-5 h-5" />
-              <span>Login with GitHub</span>
-              <ArrowRight className="w-5 h-5" />
-            </motion.button>
-            
-            <motion.button
-              whileHover={{ scale: 1.05, y: -2 }}
-              whileTap={{ scale: 0.95 }}
-              className="px-8 py-4 bg-white dark:bg-dark-accent text-gray-900 dark:text-white rounded-xl font-semibold text-lg border-2 border-gray-200 dark:border-dark-accent hover:border-neon-blue transition-all duration-300"
-            >
-              View Demo
-            </motion.button>
+            {!loading && (
+              <>
+                {isLoggedIn ? (
+                  <>
+                    <motion.div
+                      initial={{ opacity: 0, scale: 0.9 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      className="flex items-center space-x-3 px-6 py-3 bg-gradient-to-r from-neon-blue to-neon-purple text-white rounded-xl"
+                    >
+                      <img
+                        src={user?.avatar_url}
+                        alt={user?.name || user?.login}
+                        className="w-8 h-8 rounded-full border-2 border-white"
+                      />
+                      <span className="font-semibold">
+                        Welcome, {user?.name || user?.login}!
+                      </span>
+                    </motion.div>
+                    
+                    <motion.button
+                      whileHover={{ scale: 1.05, y: -2 }}
+                      whileTap={{ scale: 0.95 }}
+                      onClick={() => window.location.href = '/dashboard'}
+                      className="px-8 py-4 bg-white dark:bg-dark-accent text-gray-900 dark:text-white rounded-xl font-semibold text-lg border-2 border-gray-200 dark:border-dark-accent hover:border-neon-blue transition-all duration-300"
+                    >
+                      Go to Dashboard
+                    </motion.button>
+                    
+                    <motion.button
+                      whileHover={{ scale: 1.05, y: -2 }}
+                      whileTap={{ scale: 0.95 }}
+                      onClick={handleLogout}
+                      className="px-6 py-4 bg-red-500 text-white rounded-xl font-semibold text-lg hover:bg-red-600 transition-all duration-300 flex items-center space-x-2"
+                    >
+                      <LogOut className="w-5 h-5" />
+                      <span>Logout</span>
+                    </motion.button>
+                  </>
+                ) : (
+                  <>
+                    <motion.button
+                      whileHover={{ scale: 1.05, y: -2 }}
+                      whileTap={{ scale: 0.95 }}
+                      onClick={handleLogin}
+                      className="px-8 py-4 bg-gradient-to-r from-neon-blue to-neon-purple text-white rounded-xl font-semibold text-lg shadow-lg hover:shadow-xl transition-all duration-300 flex items-center space-x-2"
+                    >
+                      <Github className="w-5 h-5" />
+                      <span>Login with GitHub</span>
+                      <ArrowRight className="w-5 h-5" />
+                    </motion.button>
+                    
+                    <motion.button
+                      whileHover={{ scale: 1.05, y: -2 }}
+                      whileTap={{ scale: 0.95 }}
+                      onClick={() => setIsDemoModalOpen(true)}
+                      className="px-8 py-4 bg-white dark:bg-dark-accent text-gray-900 dark:text-white rounded-xl font-semibold text-lg border-2 border-gray-200 dark:border-dark-accent hover:border-neon-blue transition-all duration-300"
+                    >
+                      View Demo
+                    </motion.button>
+                  </>
+                )}
+              </>
+            )}
           </motion.div>
 
           {/* Stats */}
@@ -188,34 +284,16 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="py-16 px-4 sm:px-6 lg:px-8 bg-gradient-to-r from-neon-blue to-neon-purple">
-        <div className="max-w-4xl mx-auto text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-          >
-            <h2 className="text-3xl sm:text-4xl font-bold text-white mb-6">
-              Ready to Showcase Your Projects?
-            </h2>
-            <p className="text-xl text-blue-100 mb-8">
-              Join thousands of developers who are already using DevShelf to showcase their work
-            </p>
-            <motion.button
-              whileHover={{ scale: 1.05, y: -2 }}
-              whileTap={{ scale: 0.95 }}
-              className="px-8 py-4 bg-white text-neon-blue rounded-xl font-semibold text-lg shadow-lg hover:shadow-xl transition-all duration-300"
-            >
-              Get Started Now
-            </motion.button>
-          </motion.div>
-        </div>
-      </section>
+
 
       {/* AI Chatbot */}
       <AIChatbot />
+
+      {/* Demo Modal */}
+      <DemoModal 
+        isOpen={isDemoModalOpen} 
+        onClose={() => setIsDemoModalOpen(false)} 
+      />
     </div>
   )
 }

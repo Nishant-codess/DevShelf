@@ -35,6 +35,8 @@ const config: Config = {
           secondary: "#111827",
           accent: "#1F2937",
         },
+        "dark-accent": "#1F2937",
+        "dark-secondary": "#111827",
         // Accent colors
         neon: {
           blue: "#38BDF8",

@@ -1,15 +1,57 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useTheme } from '@/contexts/ThemeContext'
-import { Sun, Moon, Menu, X, Github, Sparkles } from 'lucide-react'
+import { Sun, Moon, Menu, X, Github, Sparkles, LogOut } from 'lucide-react'
+import { initiateGitHubLogin, isAuthenticated, removeAccessToken, getAccessToken, getAuthenticatedUser } from '@/lib/github-auth'
+import { GitHubUser } from '@/lib/github-auth'
 
 
 export default function Navbar() {
   const { theme, toggleTheme } = useTheme()
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const [user, setUser] = useState<GitHubUser | null>(null)
+
+  useEffect(() => {
+    const checkAuthStatus = async () => {
+      const authenticated = isAuthenticated()
+      setIsLoggedIn(authenticated)
+      
+      if (authenticated) {
+        try {
+          const accessToken = getAccessToken()
+          if (accessToken) {
+            const userData = await getAuthenticatedUser(accessToken)
+            setUser(userData)
+          }
+        } catch (error) {
+          console.error('Error fetching user data:', error)
+          removeAccessToken()
+          setIsLoggedIn(false)
+        }
+      }
+    }
+
+    checkAuthStatus()
+  }, [])
+
+  const handleLogin = () => {
+    initiateGitHubLogin()
+  }
+
+  const handleLogout = () => {
+    removeAccessToken()
+    try {
+      sessionStorage.removeItem('userRepositories')
+    } catch (error) {
+      console.error('Error clearing user repositories:', error)
+    }
+    setIsLoggedIn(false)
+    setUser(null)
+  }
 
   const navItems = [
     { name: 'Home', href: '/' },
@@ -68,15 +110,40 @@ export default function Navbar() {
               )}
             </motion.button>
 
-            {/* GitHub Login Button */}
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="hidden sm:flex items-center space-x-2 px-4 py-2 bg-gray-900 dark:bg-white text-white dark:text-gray-900 rounded-lg hover:bg-gray-800 dark:hover:bg-gray-100 transition-colors duration-200"
-            >
-              <Github className="w-4 h-4" />
-              <span>Login with GitHub</span>
-            </motion.button>
+            {/* GitHub Login/User Button */}
+            {isLoggedIn ? (
+              <div className="hidden sm:flex items-center space-x-3">
+                <div className="flex items-center space-x-2 px-3 py-2 bg-gradient-to-r from-neon-blue to-neon-purple text-white rounded-lg">
+                  <img
+                    src={user?.avatar_url}
+                    alt={user?.name || user?.login}
+                    className="w-6 h-6 rounded-full border border-white"
+                  />
+                  <span className="text-sm font-medium">
+                    {user?.name || user?.login}
+                  </span>
+                </div>
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={handleLogout}
+                  className="flex items-center space-x-2 px-3 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors duration-200"
+                >
+                  <LogOut className="w-4 h-4" />
+                  <span className="text-sm">Logout</span>
+                </motion.button>
+              </div>
+            ) : (
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={handleLogin}
+                className="hidden sm:flex items-center space-x-2 px-4 py-2 bg-gray-900 dark:bg-white text-white dark:text-gray-900 rounded-lg hover:bg-gray-800 dark:hover:bg-gray-100 transition-colors duration-200"
+              >
+                <Github className="w-4 h-4" />
+                <span>Login with GitHub</span>
+              </motion.button>
+            )}
 
             {/* Mobile menu button */}
             <button
@@ -113,12 +180,43 @@ export default function Navbar() {
                     {item.name}
                   </Link>
                 ))}
-                <div className="px-4 py-2">
-                  <button className="w-full flex items-center justify-center space-x-2 px-4 py-2 bg-gray-900 dark:bg-white text-white dark:text-gray-900 rounded-lg hover:bg-gray-800 dark:hover:bg-gray-100 transition-colors duration-200">
-                    <Github className="w-4 h-4" />
-                    <span>Login with GitHub</span>
-                  </button>
-                </div>
+                {isLoggedIn ? (
+                  <div className="px-4 py-2 space-y-2">
+                    <div className="flex items-center space-x-2 px-4 py-2 bg-gradient-to-r from-neon-blue to-neon-purple text-white rounded-lg">
+                      <img
+                        src={user?.avatar_url}
+                        alt={user?.name || user?.login}
+                        className="w-6 h-6 rounded-full border border-white"
+                      />
+                      <span className="text-sm font-medium">
+                        {user?.name || user?.login}
+                      </span>
+                    </div>
+                    <button 
+                      onClick={() => {
+                        handleLogout()
+                        setIsMenuOpen(false)
+                      }}
+                      className="w-full flex items-center justify-center space-x-2 px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors duration-200"
+                    >
+                      <LogOut className="w-4 h-4" />
+                      <span>Logout</span>
+                    </button>
+                  </div>
+                ) : (
+                  <div className="px-4 py-2">
+                    <button 
+                      onClick={() => {
+                        handleLogin()
+                        setIsMenuOpen(false)
+                      }}
+                      className="w-full flex items-center justify-center space-x-2 px-4 py-2 bg-gray-900 dark:bg-white text-white dark:text-gray-900 rounded-lg hover:bg-gray-800 dark:hover:bg-gray-100 transition-colors duration-200"
+                    >
+                      <Github className="w-4 h-4" />
+                      <span>Login with GitHub</span>
+                    </button>
+                  </div>
+                )}
               </div>
             </motion.div>
           )}

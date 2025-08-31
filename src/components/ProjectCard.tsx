@@ -75,7 +75,7 @@ export default function ProjectCard({ repo, index }: ProjectCardProps) {
               {repo.language}
             </span>
           )}
-          {repo.topics.slice(0, 3).map((topic) => (
+          {repo.topics && repo.topics.slice(0, 3).map((topic) => (
             <span key={topic} className="px-2 py-1 bg-gray-100 dark:bg-dark-secondary text-gray-600 dark:text-gray-300 text-xs rounded-full">
               {topic}
             </span>
