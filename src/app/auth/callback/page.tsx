@@ -1,12 +1,12 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { motion } from 'framer-motion'
 import { Loader2, CheckCircle, XCircle, Github } from 'lucide-react'
 import { exchangeCodeForToken, storeAccessToken } from '@/lib/github-auth'
 
-export default function AuthCallbackPage() {
+function AuthCallbackContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const [status, setStatus] = useState<'loading' | 'success' | 'error'>('loading')
@@ -126,5 +126,30 @@ export default function AuthCallbackPage() {
         {getStatusContent()}
       </motion.div>
     </div>
+  )
+}
+
+export default function AuthCallbackPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-gray-50 dark:bg-dark-primary flex items-center justify-center">
+        <div className="text-center p-8 bg-white dark:bg-dark-secondary rounded-2xl shadow-lg border border-gray-200 dark:border-dark-accent max-w-md w-full mx-4">
+          <div className="mb-6">
+            <div className="w-20 h-20 bg-gradient-to-r from-neon-blue to-neon-purple rounded-full flex items-center justify-center mx-auto mb-4">
+              <Github className="w-10 h-10 text-white" />
+            </div>
+          </div>
+          <Loader2 className="w-16 h-16 animate-spin text-neon-blue mb-4" />
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+            Loading...
+          </h1>
+          <p className="text-gray-600 dark:text-gray-400">
+            Please wait...
+          </p>
+        </div>
+      </div>
+    }>
+      <AuthCallbackContent />
+    </Suspense>
   )
 }

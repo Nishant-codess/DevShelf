@@ -1,8 +1,8 @@
 'use client'
 
-import { use, useState, useEffect } from 'react'
+import React, { use, useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { ArrowLeft, Star, Eye, Calendar, ExternalLink, Github, Badge as BadgeIcon } from 'lucide-react'
+import { ArrowLeft, Star, Calendar, ExternalLink, Github, Badge as BadgeIcon } from 'lucide-react'
 import Link from 'next/link'
 import { sampleRepositories } from '@/data/sampleRepos'
 import { Repository } from '@/types'
@@ -46,9 +46,18 @@ export default function ProjectDetailsPage({ params }: ProjectDetailsPageProps) 
   const [project, setProject] = useState<Repository | null>(null)
   const [loading, setLoading] = useState(true)
   const [readme, setReadme] = useState<string>('')
-  const [activity, setActivity] = useState<any[]>([])
-  const [issues, setIssues] = useState<any[]>([])
-  const [isAuthenticated, setIsAuthenticated] = useState(false)
+  const [activity, setActivity] = useState<Array<{
+    type: string;
+    actor?: { login: string };
+    created_at: string;
+  }>>([])
+  const [issues, setIssues] = useState<Array<{
+    title: string;
+    body?: string;
+    state: string;
+    user?: { login: string };
+    created_at: string;
+  }>>([])
   
   useEffect(() => {
     // First try to find in sample repositories
@@ -104,7 +113,7 @@ export default function ProjectDetailsPage({ params }: ProjectDetailsPageProps) 
       const accessToken = getAccessToken()
       if (!accessToken) return
 
-      setIsAuthenticated(true)
+      
 
       try {
         const [owner, repo] = project.full_name.split('/')
@@ -258,7 +267,7 @@ export default function ProjectDetailsPage({ params }: ProjectDetailsPageProps) 
                               // Parse markdown and convert to JSX
                               const parseMarkdown = (text: string) => {
                                 const lines = text.split('\n')
-                                const elements: JSX.Element[] = []
+                                const elements: React.ReactElement[] = []
                                 let inCodeBlock = false
                                 let codeBlockContent: string[] = []
                                 let codeBlockLanguage = ''
@@ -398,8 +407,8 @@ export default function ProjectDetailsPage({ params }: ProjectDetailsPageProps) 
                               }
                               
                                                              // Parse inline markdown elements and return JSX elements
-                               const parseInlineMarkdown = (text: string): (string | JSX.Element)[] => {
-                                 const elements: (string | JSX.Element)[] = []
+                                                               const parseInlineMarkdown = (text: string): (string | React.ReactElement)[] => {
+                                  const elements: (string | React.ReactElement)[] = []
                                  let currentText = text
                                  
                                                                    // Fix character encoding issues
@@ -510,7 +519,7 @@ export default function ProjectDetailsPage({ params }: ProjectDetailsPageProps) 
                                  
                                  // Split the remaining text and interleave with elements
                                  const textParts = currentText.split(/(__[A-Z_]+_\d+__)/)
-                                 const result: (string | JSX.Element)[] = []
+                                                                   const result: (string | React.ReactElement)[] = []
                                  
                                  textParts.forEach((part, index) => {
                                    if (part.match(/__[A-Z_]+_\d+__/)) {

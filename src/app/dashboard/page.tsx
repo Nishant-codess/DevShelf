@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { useRouter } from 'next/navigation'
-import { Github, LogOut, ArrowLeft, Star, GitFork, Eye, Calendar, Check, ExternalLink } from 'lucide-react'
+import { Github, LogOut, ArrowLeft, Check, ExternalLink } from 'lucide-react'
 import { isAuthenticated, getAccessToken, removeAccessToken, getAuthenticatedUser, getAuthenticatedUserRepos } from '@/lib/github-auth'
 import { GitHubUser } from '@/lib/github-auth'
 import { Repository } from '@/types'
@@ -41,8 +41,33 @@ export default function DashboardPage() {
 
         // Convert GitHub repositories to our Repository format and filter only public repos
         const convertedRepos: Repository[] = reposData
-          .filter((repo: any) => !repo.private) // Only public repositories
-          .map((repo: any) => ({
+          .filter((repo: { private: boolean }) => !repo.private) // Only public repositories
+          .map((repo: { 
+            id: number; 
+            name: string; 
+            full_name: string; 
+            description: string | null; 
+            html_url: string; 
+            clone_url: string; 
+            stargazers_count: number; 
+            forks_count: number; 
+            language: string | null; 
+            topics: string[]; 
+            created_at: string; 
+            updated_at: string; 
+            pushed_at: string; 
+            default_branch: string; 
+            homepage: string | null; 
+            license: { name: string; spdx_id: string } | null; 
+            archived: boolean; 
+            disabled: boolean; 
+            private: boolean; 
+            fork: boolean; 
+            size: number; 
+            open_issues_count: number; 
+            watchers_count: number; 
+            visibility: string; 
+          }) => ({
             id: repo.id,
             name: repo.name,
             full_name: repo.full_name,
@@ -121,7 +146,7 @@ export default function DashboardPage() {
   }
 
   const handleCreateShowcase = () => {
-    if (selectedRepos.size === 0) return
+    if (selectedRepos.size === 0 || !user) return
     
     const selectedReposList = repos.filter(repo => selectedRepos.has(repo.id))
     const showcaseData = {
@@ -337,7 +362,7 @@ export default function DashboardPage() {
                 No repositories found
               </h3>
               <p className="text-gray-600 dark:text-gray-400">
-                You don't have any public repositories yet.
+                                 You don&apos;t have any public repositories yet.
               </p>
             </div>
           )}

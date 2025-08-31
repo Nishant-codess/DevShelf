@@ -261,7 +261,7 @@ export default function DemoModal({ isOpen, onClose }: DemoModalProps) {
                           {repos.length} Repository{repos.length !== 1 ? 'ies' : ''} Found
                         </h3>
                         <p className="text-gray-600 dark:text-gray-400">
-                          Here's how your projects would look on DevShelf
+                          Here&apos;s how your projects would look on DevShelf
                         </p>
                       </div>
                       
@@ -278,7 +278,7 @@ export default function DemoModal({ isOpen, onClose }: DemoModalProps) {
                         No repositories found
                       </h3>
                       <p className="text-gray-600 dark:text-gray-400">
-                        This user doesn't have any public repositories or the username might be incorrect.
+                        This user doesn&apos;t have any public repositories or the username might be incorrect.
                       </p>
                     </div>
                   )}

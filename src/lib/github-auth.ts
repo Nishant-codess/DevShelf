@@ -80,7 +80,32 @@ export async function getAuthenticatedUser(accessToken: string): Promise<GitHubU
 }
 
 // Get authenticated user's repositories
-export async function getAuthenticatedUserRepos(accessToken: string): Promise<any[]> {
+export async function getAuthenticatedUserRepos(accessToken: string): Promise<Array<{
+  id: number;
+  name: string;
+  full_name: string;
+  description: string | null;
+  html_url: string;
+  clone_url: string;
+  stargazers_count: number;
+  forks_count: number;
+  language: string | null;
+  topics: string[];
+  created_at: string;
+  updated_at: string;
+  pushed_at: string;
+  default_branch: string;
+  homepage: string | null;
+  license: { name: string; spdx_id: string } | null;
+  archived: boolean;
+  disabled: boolean;
+  private: boolean;
+  fork: boolean;
+  size: number;
+  open_issues_count: number;
+  watchers_count: number;
+  visibility: string;
+}>> {
   const response = await fetch('https://api.github.com/user/repos?sort=updated&per_page=100', {
     headers: {
       'Authorization': `token ${accessToken}`,
@@ -113,7 +138,11 @@ export async function getRepositoryReadme(owner: string, repo: string, accessTok
 }
 
 // Get repository activity (commits, issues, etc.)
-export async function getRepositoryActivity(owner: string, repo: string, accessToken: string): Promise<any[]> {
+export async function getRepositoryActivity(owner: string, repo: string, accessToken: string): Promise<Array<{
+  type: string;
+  actor?: { login: string };
+  created_at: string;
+}>> {
   const response = await fetch(`https://api.github.com/repos/${owner}/${repo}/events?per_page=10`, {
     headers: {
       'Authorization': `token ${accessToken}`,
@@ -129,7 +158,13 @@ export async function getRepositoryActivity(owner: string, repo: string, accessT
 }
 
 // Get repository issues and comments
-export async function getRepositoryIssues(owner: string, repo: string, accessToken: string): Promise<any[]> {
+export async function getRepositoryIssues(owner: string, repo: string, accessToken: string): Promise<Array<{
+  title: string;
+  body?: string;
+  state: string;
+  user?: { login: string };
+  created_at: string;
+}>> {
   const response = await fetch(`https://api.github.com/repos/${owner}/${repo}/issues?state=all&per_page=5`, {
     headers: {
       'Authorization': `token ${accessToken}`,

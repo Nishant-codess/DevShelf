@@ -4,7 +4,7 @@ import { use } from 'react'
 import { motion } from 'framer-motion'
 import { ArrowLeft, Share2 } from 'lucide-react'
 import Link from 'next/link'
-import ParticlesBackground from '@/components/ParticlesBackground'
+
 import ProjectCard from '@/components/ProjectCard'
 import AIChatbot from '@/components/AIChatbot'
 import { sampleRepositories } from '@/data/sampleRepos'
@@ -26,8 +26,7 @@ export default function UserShowcasePage({ params }: UserShowcasePageProps) {
 
   return (
     <div className="relative min-h-screen">
-      {/* Animated Background */}
-      <ParticlesBackground />
+
       
       {/* Header */}
       <section className="relative pt-20 pb-16 px-4 sm:px-6 lg:px-8">

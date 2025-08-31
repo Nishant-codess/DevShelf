@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { ArrowRight, Github, Star, GitFork, Eye, LogOut } from 'lucide-react'
-import ParticlesBackground from '@/components/ParticlesBackground'
+
 import ProjectCard from '@/components/ProjectCard'
 import AIChatbot from '@/components/AIChatbot'
 import DemoModal from '@/components/DemoModal'
@@ -64,8 +64,7 @@ export default function HomePage() {
   return (
     <div className="relative min-h-screen">
 
-      {/* Animated Background */}
-      <ParticlesBackground />
+
       
       {/* Hero Section */}
       <section className="relative pt-20 pb-16 px-4 sm:px-6 lg:px-8">
