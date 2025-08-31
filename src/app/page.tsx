@@ -154,16 +154,7 @@ export default function HomePage() {
                       View Demo
                     </motion.button>
                     
-                    <motion.a
-                      href="/demo.html"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      whileHover={{ scale: 1.05, y: -2 }}
-                      whileTap={{ scale: 0.95 }}
-                      className="px-8 py-4 bg-gray-100 dark:bg-dark-secondary text-gray-700 dark:text-gray-300 rounded-xl font-semibold text-lg border-2 border-gray-200 dark:border-dark-accent hover:border-neon-blue transition-all duration-300"
-                    >
-                      Widget Demo
-                    </motion.a>
+
                   </>
                 )}
               </>

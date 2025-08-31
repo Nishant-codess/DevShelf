@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion'
 import Link from 'next/link'
-import { Github, Twitter, Linkedin, Mail, Sparkles } from 'lucide-react'
+import { Github, Linkedin, Mail, Sparkles, Heart } from 'lucide-react'
 
 export default function Footer() {
   const currentYear = new Date().getFullYear()
@@ -27,7 +27,7 @@ export default function Footer() {
             </p>
             <div className="flex space-x-4">
               <motion.a
-                href="https://github.com"
+                href="https://github.com/Nishant-codess"
                 target="_blank"
                 rel="noopener noreferrer"
                 whileHover={{ scale: 1.1, y: -2 }}
@@ -36,16 +36,7 @@ export default function Footer() {
                 <Github className="w-5 h-5" />
               </motion.a>
               <motion.a
-                href="https://twitter.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                whileHover={{ scale: 1.1, y: -2 }}
-                className="w-10 h-10 bg-gray-100 dark:bg-dark-accent rounded-lg flex items-center justify-center text-gray-600 dark:text-gray-300 hover:bg-neon-blue hover:text-white transition-colors duration-200"
-              >
-                <Twitter className="w-5 h-5" />
-              </motion.a>
-              <motion.a
-                href="https://linkedin.com"
+                href="https://www.linkedin.com/in/nishant-ranjan-srmist/"
                 target="_blank"
                 rel="noopener noreferrer"
                 whileHover={{ scale: 1.1, y: -2 }}
@@ -54,7 +45,7 @@ export default function Footer() {
                 <Linkedin className="w-5 h-5" />
               </motion.a>
               <motion.a
-                href="mailto:contact@devshelf.com"
+                href="mailto:nishant.ranjan.air1@gmail.com"
                 whileHover={{ scale: 1.1, y: -2 }}
                 className="w-10 h-10 bg-gray-100 dark:bg-dark-accent rounded-lg flex items-center justify-center text-gray-600 dark:text-gray-300 hover:bg-neon-blue hover:text-white transition-colors duration-200"
               >
@@ -80,7 +71,7 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/u/demo" className="text-gray-600 dark:text-gray-300 hover:text-neon-blue transition-colors duration-200">
+                <Link href="/showcase" className="text-gray-600 dark:text-gray-300 hover:text-neon-blue transition-colors duration-200">
                   Showcase
                 </Link>
               </li>
@@ -126,17 +117,14 @@ export default function Footer() {
         <div className="mt-8 pt-8 border-t border-gray-200 dark:border-dark-accent">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <p className="text-gray-500 dark:text-gray-400 text-sm">
-              © {currentYear} DevShelf. All rights reserved.
+              © {currentYear} DevShelf. All Rights Reserved. Made with <Heart className="w-4 h-4 inline text-red-500" /> Nishant Ranjan.
             </p>
             <div className="flex space-x-6 mt-4 md:mt-0">
-              <Link href="/privacy" className="text-gray-500 dark:text-gray-400 hover:text-neon-blue text-sm transition-colors duration-200">
-                Privacy Policy
-              </Link>
               <Link href="/terms" className="text-gray-500 dark:text-gray-400 hover:text-neon-blue text-sm transition-colors duration-200">
                 Terms of Service
               </Link>
-              <Link href="/cookies" className="text-gray-500 dark:text-gray-400 hover:text-neon-blue text-sm transition-colors duration-200">
-                Cookie Policy
+              <Link href="/privacy" className="text-gray-500 dark:text-gray-400 hover:text-neon-blue text-sm transition-colors duration-200">
+                Privacy Policy
               </Link>
             </div>
           </div>

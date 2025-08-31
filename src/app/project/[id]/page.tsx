@@ -521,7 +521,7 @@ export default function ProjectDetailsPage({ params }: ProjectDetailsPageProps) 
                                  const textParts = currentText.split(/(__[A-Z_]+_\d+__)/)
                                                                    const result: (string | React.ReactElement)[] = []
                                  
-                                 textParts.forEach((part, index) => {
+                                 textParts.forEach((part) => {
                                    if (part.match(/__[A-Z_]+_\d+__/)) {
                                      const elementIndex = parseInt(part.match(/\d+/)?.[0] || '0')
                                      if (elements[elementIndex]) {
